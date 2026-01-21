@@ -54,5 +54,47 @@
     "frames": 127,
     "time_ms": 26359.032154083252,
     "device": "PC"
+  },
+  {
+    "clip_id": "df7cf74a-839a-481c-a212-984d42e38ec9",
+    "prediction": "NoViolence",
+    "frames": 43,
+    "time_ms": 16283.351182937622,
+    "device": "PC"
+  },
+  {
+    "clip_id": "45c3f300-40da-4ce4-8f17-69b1f558d016",
+    "prediction": "NoViolence",
+    "frames": 43,
+    "time_ms": 15887.148380279541,
+    "device": "PC"
+  },
+  {
+    "clip_id": "670c7476-131a-4bc8-85c6-8fa552927f33",
+    "prediction": "NoViolence",
+    "frames": 43,
+    "time_ms": 15978.706121444702,
+    "device": "PC"
+  },
+  {
+    "clip_id": "f2ce74ab-9889-425c-8d80-f2333cd90345",
+    "prediction": "NoViolence",
+    "frames": 43,
+    "time_ms": 16002.427101135254,
+    "device": "PC"
+  },
+  {
+    "clip_id": "b1a0494a-5d53-4de3-819f-6e33ad553888",
+    "prediction": "Violence",
+    "frames": 138,
+    "time_ms": 44684.18216705322,
+    "device": "PC"
+  },
+  {
+    "clip_id": "d680dcec-7bca-4646-93ec-e203080fd2a1",
+    "prediction": "NoViolence",
+    "frames": 43,
+    "time_ms": 15892.600774765015,
+    "device": "PC"
   }
 ]

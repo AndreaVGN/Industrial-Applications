@@ -86,13 +86,7 @@ async function tick() {
     document.getElementById("ts").innerText = fmtTs(ev.ts_utc_ms);
 
     document.getElementById("pred").innerText = ev.prediction || "-";
-    document.getElementById("prob").innerText =
-      (ev.prob != null) ? ev.prob.toFixed(3) : "-";
-
-    document.getElementById("probs").innerText =
-      (ev.probs && ev.probs.length)
-        ? ev.probs.map(x => Number(x).toFixed(3)).join(", ")
-        : "-";
+    
 
     const timings = ev.timings_ms || {};
     document.getElementById("timings").innerText =
