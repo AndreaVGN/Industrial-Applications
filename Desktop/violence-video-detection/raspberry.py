@@ -12,7 +12,7 @@ from ultralytics import YOLO
 # =========================
 # CONFIG
 # =========================
-PC_IP = "172.20.10.12"
+PC_IP = "192.168.1.71"
 PC_PORT = 9000
 
 MODE = "edge_video"        # "edge_video" | "edge_inference"
