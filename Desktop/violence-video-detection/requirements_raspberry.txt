@@ -1,5 +1,4 @@
 # === Raspberry / Edge (ONNX only) ===
-onnxruntime
 opencv-python-headless
 numpy
 requests
