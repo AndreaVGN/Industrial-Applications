@@ -3,11 +3,9 @@ import requests
 import os
 import uuid
 import time
-import argparse
-import json
 import cv2
-
-from ultralytics import YOLO
+import numpy as np
+import onnxruntime as ort
 
 # =========================
 # CONFIG
@@ -28,14 +26,14 @@ os.makedirs(OUT_DIR, exist_ok=True)
 DEVICE_ID = "raspberry_pi_cam_v3"
 
 # =========================
-# YOLO EDGE CONFIG
+# ONNX YOLO CONFIG
 # =========================
 USE_EDGE_INFERENCE = (MODE == "edge_inference")
-MODEL_VARIANT = "small"                     # "nano" | "small"
-YOLO_MODEL_PATH = "yolo_small_weights.pt"   # path locale sul Raspberry
-IMG_SIZE = 320                              # OBBLIGATORIO per small
+
+ONNX_MODEL_PATH = "yolo_small_weights.onnx"
+IMG_SIZE = 320
 CONF_THRES = 0.4
-SAMPLE_EVERY_N = 3                          # processa 1 frame ogni N
+SAMPLE_EVERY_N = 3   # processa 1 frame ogni N
 
 # =========================
 # ENDPOINTS
@@ -44,14 +42,19 @@ API_PROCESS = f"http://{PC_IP}:{PC_PORT}/api/process"
 API_PUSH = f"http://{PC_IP}:{PC_PORT}/api/push"
 
 # =========================
-# LOAD YOLO MODEL (ONCE)
+# LOAD ONNX MODEL (ONCE)
 # =========================
-yolo_model = None
+session = None
+input_name = None
 
 if USE_EDGE_INFERENCE:
-    print(f"[INFO] Loading YOLOv8-{MODEL_VARIANT} model on Raspberry...")
-    yolo_model = YOLO(YOLO_MODEL_PATH)
-    print("[INFO] YOLO model loaded.")
+    print("[INFO] Loading YOLOv8-small ONNX model on Raspberry...")
+    session = ort.InferenceSession(
+        ONNX_MODEL_PATH,
+        providers=["CPUExecutionProvider"]
+    )
+    input_name = session.get_inputs()[0].name
+    print("[INFO] ONNX model loaded.")
 
 # =========================
 # RECORD VIDEO
@@ -71,7 +74,18 @@ def record_video(path):
     subprocess.run(cmd, check=True)
 
 # =========================
-# LOCAL YOLO INFERENCE
+# PREPROCESS FRAME (YOLO ONNX)
+# =========================
+def preprocess(frame):
+    img = cv2.resize(frame, (IMG_SIZE, IMG_SIZE))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = img.astype(np.float32) / 255.0
+    img = np.transpose(img, (2, 0, 1))   # HWC -> CHW
+    img = np.expand_dims(img, axis=0)    # CHW -> BCHW
+    return img
+
+# =========================
+# LOCAL ONNX INFERENCE
 # =========================
 def run_local_inference(video_path):
     cap = cv2.VideoCapture(video_path)
@@ -91,24 +105,19 @@ def run_local_inference(video_path):
         if frame_id % SAMPLE_EVERY_N != 0:
             continue
 
-        results = yolo_model(
-            frame,
-            imgsz=IMG_SIZE,
-            conf=CONF_THRES,
-            device="cpu",
-            verbose=False
-        )
+        inp = preprocess(frame)
+        outputs = session.run(None, {input_name: inp})[0][0]
+        # output shape: (300, 6)
+        # [x1, y1, x2, y2, conf, class]
 
-        for det in results[0].boxes:
-            cls = int(det.cls)
-            conf = float(det.conf)
-
-            if cls == 1:  # Violence
+        for x1, y1, x2, y2, conf, cls in outputs:
+            if conf < CONF_THRES:
+                continue
+            if int(cls) == 1:  # Violence
                 violence = True
                 max_conf = max(max_conf, conf)
 
     cap.release()
-
     t1 = time.time()
 
     return {
@@ -155,7 +164,7 @@ if MODE == "edge_video":
 # MODE B: EDGE INFERENCE
 # =========================
 elif MODE == "edge_inference":
-    print("[INFO] Running local YOLO inference on Raspberry...")
+    print("[INFO] Running local ONNX inference on Raspberry...")
 
     ts_start_inf = int(time.time() * 1000)
     result = run_local_inference(video_path)
@@ -174,7 +183,7 @@ elif MODE == "edge_inference":
             "inference": result["inference_ms"],
             "edge_total": ts_end_inf - ts_start_capture
         },
-        "model": f"yolo_{MODEL_VARIANT}"
+        "model": "yolo_small_onnx"
     }
 
     print("[INFO] Sending inference result to server...")
