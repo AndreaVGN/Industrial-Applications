@@ -1,0 +1,58 @@
+[
+  {
+    "clip_id": "36b0e3aa-d39a-4327-8742-052377abb56c",
+    "prediction": "Violence",
+    "frames": 138,
+    "time_ms": 33024.61791038513,
+    "device": "PC"
+  },
+  {
+    "clip_id": "602c93e4-53c0-4e65-bae8-f68919089c7b",
+    "prediction": "Violence",
+    "frames": 127,
+    "time_ms": 23968.27268600464,
+    "device": "PC"
+  },
+  {
+    "clip_id": "604e07a5-8539-44b4-9372-60aa7d5b1d26",
+    "prediction": "Violence",
+    "frames": 127,
+    "time_ms": 23156.142950057983,
+    "device": "PC"
+  },
+  {
+    "clip_id": "097c22a3-b7ef-4b7a-a964-304b2d53d373",
+    "prediction": "Violence",
+    "frames": 127,
+    "time_ms": 25014.392375946045,
+    "device": "PC"
+  },
+  {
+    "clip_id": "095dc464-d448-43e2-bbcf-a7d477150ec9",
+    "prediction": "Violence",
+    "frames": 127,
+    "time_ms": 26231.317281723022,
+    "device": "PC"
+  },
+  {
+    "clip_id": "83e008c6-8ce5-4a74-af19-50dc72e9ab07",
+    "prediction": "Violence",
+    "frames": 138,
+    "time_ms": 25431.87165260315,
+    "device": "PC"
+  },
+  {
+    "clip_id": "3cd2b8b9-1aa1-4410-a79a-d23f293f2c1a",
+    "prediction": "Violence",
+    "frames": 127,
+    "time_ms": 20530.766010284424,
+    "device": "PC"
+  },
+  {
+    "clip_id": "a14899ad-6bf2-4e5c-be3c-7cbbe2773b68",
+    "prediction": "Violence",
+    "frames": 127,
+    "time_ms": 26359.032154083252,
+    "device": "PC"
+  }
+]
