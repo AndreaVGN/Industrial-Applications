@@ -33,13 +33,6 @@ Raspberry Pi 3 B+ + Camera v2  ──HTTP──▶  FastAPI server (PC)  ──�
 - **Selected operating point.** **5 FPS with a 0.5 threshold** gave no false negatives on the evaluated dataset, with acceptable latency.
 ## Repository structure
  
-```
-violence-video-detection/
-├── app.py          # FastAPI inference server + web UI
-├── raspberry.py    # acquisition and upload script (Raspberry Pi)
-└── ...             # model, demo video, requirements
-```
- 
 ## Running the demo
  
 1. Start the server on the PC: `python app.py`
