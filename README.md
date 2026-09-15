@@ -31,7 +31,6 @@ Raspberry Pi 3 B+ + Camera v2  ──HTTP──▶  FastAPI server (PC)  ──�
 - **Frame rate.** A higher FPS improves recall and reduces false negatives, but increases end-to-end latency. At low FPS the upload time dominates; at high FPS the inference time does.
 - **Threshold.** Higher thresholds increase precision but make recall drop sharply.
 - **Selected operating point.** **5 FPS with a 0.5 threshold** gave no false negatives on the evaluated dataset, with acceptable latency.
-## Repository structure
  
 ## Running the demo
  
